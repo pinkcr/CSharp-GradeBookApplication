@@ -14,10 +14,12 @@ namespace GradeBook.GradeBooks
         public string Name { get; set; }
         public List<Student> Students { get; set; }
         public GradeBookType Type { get; set; }
+        public bool IsWeighted { get; set; }
 
-        public BaseGradeBook(string name)
+        public BaseGradeBook(string name, bool isWeighted)
         {
             Name = name;
+            IsWeighted = isWeighted;
             Students = new List<Student>();
         }
 
@@ -110,9 +112,9 @@ namespace GradeBook.GradeBooks
             switch (letterGrade)
             {
                 case 'A':
-                    return 4;
+                    return AccountForWeighting(studentType, 4);
                 case 'B':
-                    return 3;
+                    return AccountForWeighting(studentType, 3);
                 case 'C':
                     return 2;
                 case 'D':
@@ -266,6 +268,18 @@ namespace GradeBook.GradeBooks
                              select type).FirstOrDefault();
             
             return JsonConvert.DeserializeObject(json, gradebook);
+        }
+
+        private int AccountForWeighting(StudentType studentType, int gradePoints)
+        {
+            if (IsWeighted)
+            {
+                if (studentType.Equals(StudentType.Honors) || studentType.Equals(StudentType.DualEnrolled))
+                {
+                    return gradePoints + 1;
+                }
+            }
+            return gradePoints;
         }
     }
 }

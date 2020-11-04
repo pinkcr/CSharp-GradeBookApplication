@@ -9,7 +9,7 @@ namespace GradeBook.GradeBooks
     {
 
         public static string NOT_ENOUGH_STUDENTS = "Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.";
-        public RankedGradeBook(string name) : base(name)
+        public RankedGradeBook(string name, bool isWeighted) : base(name, isWeighted)
         {
             Type = Enums.GradeBookType.Ranked;
         }
